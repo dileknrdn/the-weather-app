@@ -80,6 +80,7 @@ h1 {
     background: grey;
     margin-top: 5px;
 }
+
 .weather-data {
     width: 100%;
 }
@@ -113,4 +114,29 @@ h1 {
 .current-weather .icon h4 {
     text-transform: capitalize;
     margin-top: -10px;
+}
+
+.days-forecats h2 {
+    font-size: 1.5rem;
+    margin: 20px 0;
+}
+
+.weather-cards {
+    display: flex;
+    gap: 20px;
+}
+
+.weather-cards .card {
+    color: #fff;
+    background: grey;
+    border-radius: 5px;
+    padding: 18px 16px;
+    list-style: none;
+    width: calc(100% / 5);
+}
+
+.weather-cards .card img {
+    margin: 5px 0 -12px 0;
+    max-width: 75px;
+
 }
