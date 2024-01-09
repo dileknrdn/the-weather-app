@@ -12,7 +12,7 @@ body {
 }
 
 h1 {
-    background: #5372F0;
+    background: #4a67dc;
     font-size: 1.80rem;
     color: white;
     text-align: center;
@@ -50,7 +50,7 @@ h1 {
     outline: black 2px;
     font-size: 1rem;
     color: #fff;
-    background: #5372F0;
+    background: #4a67dc;
 }
 
 .weather-input .separator {
@@ -76,8 +76,8 @@ h1 {
     background: grey;
 }
 
-.weather-input .recent-city-btn {
-    background: grey;
+.recentCity h4 {
+    text-align: center;
     margin-top: 5px;
 }
 
@@ -86,7 +86,7 @@ h1 {
 }
 
 .current-weather {
-    background: #5372F0;
+    background: #4a67dc;
     color: #fff;
     display: flex;
     justify-content: space-between;
@@ -103,6 +103,10 @@ h1 {
     font-size: 1rem;
     font-weight: 500;
     margin-top: 13px;
+}
+
+.current-weather .icon {
+    text-align: center;
 }
 
 .current-weather .icon img {
