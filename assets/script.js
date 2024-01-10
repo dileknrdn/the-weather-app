@@ -2,8 +2,7 @@ const cityInput = document.querySelector(".city-input");
 const searchButton = document.querySelector(".search-btn");
 const locationButton = document.querySelector(".location-btn");
 const currentWeatherDiv = document.querySelector(".current-weather");
-const weatherCardDiv = document.querySelector(".weather-cards");
-var recentSearchEl = document.querySelector("#recentSearch");
+const weatherCardDiv = document.querySelector(".weather-cards"); 
 
 const API_KEY = "b4bd10788309c5e5ac67d594c745e76f"; // API key from OpenWeatherMap API keys
 
@@ -124,6 +123,29 @@ const getUserCoordinates = () => {
     }
   );
 };
+
+async function fetchRecentCity(cities){
+  const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${API_KEY}`);
+  
+  if (response.ok) {
+    const data = await response.json(); 
+  }
+  
+ localStorage.setItem('apiData', JSON.stringify(data));
+
+  console.log('data from API stored in localStorage', data);
+} else {
+  console.error('Failed to fetch data from API:', response.status, response.statusText);
+} catch (error) {
+  console.error('Error fetching data from API:', error);
+
+}
+
+fetchRecentCity(); 
+
+
+
+
 
 searchButton.addEventListener("click", getCityCoordinates);
 locationButton.addEventListener("click", getUserCoordinates);
