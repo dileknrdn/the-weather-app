@@ -1,8 +1,7 @@
 const cityInput = document.querySelector(".city-input");
 const searchButton = document.querySelector(".search-btn");
-const locationButton = document.querySelector(".location-btn");
 const currentWeatherDiv = document.querySelector(".current-weather");
-const weatherCardDiv = document.querySelector(".weather-cards"); 
+const weatherCardDiv = document.querySelector(".weather-cards");
 
 const API_KEY = "b4bd10788309c5e5ac67d594c745e76f"; // API key from OpenWeatherMap API keys
 
@@ -97,55 +96,18 @@ const getCityCoordinates = () => {
     });
 };
 
-const getUserCoordinates = () => {
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const { latitude, longitude } = position.coords;
-      const REVERSE_GEOCODING_URL = `http://api.openweathermap.org/geo/1.0/reverse?lat=${latitude}&lon=${longitude}&limit=1&appid=${API_KEY}`;
-      // Using reverse geocoding API we get the city name from coordinates.
-      fetch(REVERSE_GEOCODING_URL)
-        .then((res) => res.json())
-        .then((data) => {
-          const { name } = data[0];
-          getWeatherDetails(name, latitude, longitude);
-        })
-        .catch(() => {
-          alert("An error occured while fetching");
-        });
-    },
-    (error) => {
-      // Alert pops up when user denied the location permission.
-      if (error.code === error.PERMISSION_DENIED) {
-        alert(
-          "Geolocation request denied. Reset location permission to get access again"
-        );
-      }
-    }
-  );
-};
 
-async function fetchRecentCity(cities){
-  const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${API_KEY}`);
-  
-  if (response.ok) {
-    const data = await response.json(); 
-  }
-  
- localStorage.setItem('apiData', JSON.stringify(data));
+// Function to get the recent searches
+function handleClick(event) {
+  const clickedElement = event.target;
 
-  console.log('data from API stored in localStorage', data);
-} else {
-  console.error('Failed to fetch data from API:', response.status, response.statusText);
-} catch (error) {
-  console.error('Error fetching data from API:', error);
-
+  console.log(clickedElement.innerText);
 }
 
-fetchRecentCity(); 
-
-
-
-
+function handleInputChange(event) {
+  const inputValue = event.target.value;
+  console.log('Input Value:', inputValue);
+}
 
 searchButton.addEventListener("click", getCityCoordinates);
-locationButton.addEventListener("click", getUserCoordinates);
+document.getElementById("recent-srch").addEventListener('click', handleClick);
