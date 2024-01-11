@@ -2,8 +2,24 @@ const cityInput = document.querySelector(".city-input");
 const searchButton = document.querySelector(".search-btn");
 const currentWeatherDiv = document.querySelector(".current-weather");
 const weatherCardDiv = document.querySelector(".weather-cards");
+const historyDiv = document.querySelector(".history-container");
+const cityArray = [];
 
 const API_KEY = "b4bd10788309c5e5ac67d594c745e76f"; // API key from OpenWeatherMap API keys
+
+let searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+
+const getSearchHistory = (searchHistory) => {
+  const btn = document.createElement("button");
+  btn.setAttribute("class", "button");
+  btn.setAttribute("value", searchHistory);
+  btn.textContent = searchHistory;
+  historyDiv.append(btn);
+};
+
+for (let i = 0; i < searchHistory.length; i++) {
+  getSearchHistory(searchHistory[i]);
+}
 
 const createWeatherCard = (cityName, weatherItem, index) => {
   if (index === 0) {
@@ -57,7 +73,6 @@ const getWeatherDetails = (cityName, lat, lon) => {
       weatherCardDiv.innerHTML = "";
 
       // Created weather cards added to the DOM.
-
       fiveDaysForecast.forEach((weatherItem, index) => {
         if (index === 0) {
           currentWeatherDiv.insertAdjacentHTML(
@@ -76,14 +91,10 @@ const getWeatherDetails = (cityName, lat, lon) => {
       alert("An error ocuured while fetching the weather forecast!");
     });
 };
-const getCityCoordinates = () => {
-  const cityName = cityInput.value.trim(); // User enters the city name.
-  if (!cityName) return; // Return if cityName is empty or not found.
-
+const getCityCoordinates = (cityName) => {
   const GEOCODING_API_URL = `http://api.openweathermap.org/geo/1.0/direct?q=${cityName}&limit=5&appid=${API_KEY}`;
 
   // We get the input city coordinates from the API.
-
   fetch(GEOCODING_API_URL)
     .then((res) => res.json())
     .then((data) => {
@@ -96,18 +107,31 @@ const getCityCoordinates = () => {
     });
 };
 
+const storage = (city) => {
+  searchHistory = JSON.parse(localStorage.getItem("searchHistory")) || [];
+  if (!cityArray.includes(city)) {
+    cityArray.push(city);
+    localStorage.setItem("searchHistory", JSON.stringify(cityArray));
+    getSearchHistory(city);
+  }
+};
 
 // Function to get the recent searches
-function handleClick(event) {
-  const clickedElement = event.target;
-
-  console.log(clickedElement.innerText);
-}
 
 function handleInputChange(event) {
   const inputValue = event.target.value;
-  console.log('Input Value:', inputValue);
+  console.log("Input Value:", inputValue);
 }
 
-searchButton.addEventListener("click", getCityCoordinates);
-document.getElementById("recent-srch").addEventListener('click', handleClick);
+searchButton.addEventListener("click", () => {
+  const cityName = cityInput.value.trim(); // User enters the city name.
+  if (!cityName) return; // Return if cityName is empty or not found.
+  getCityCoordinates(cityName);
+  storage(cityName);
+});
+
+historyDiv.addEventListener("click", (e) => {
+  e.preventDefault();
+  const cityClick = this.event.target.value;
+  getCityCoordinates(cityClick);
+});
